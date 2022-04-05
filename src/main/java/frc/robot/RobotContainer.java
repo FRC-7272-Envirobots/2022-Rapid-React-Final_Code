@@ -7,10 +7,13 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.commands.TwistDrive;
 import frc.robot.commands.UpdateMotorMaxSpeed;
+import frc.robot.commands.AutoDrive;
+import frc.robot.commands.AutoShoot;
 import frc.robot.commands.MotorPowerDown;
 import frc.robot.commands.MotorPowerUp;
 import frc.robot.commands.TestEncoder;
@@ -67,12 +70,6 @@ public class RobotContainer
    */
   private void ConfigureButtonBindings()
   {
-    new JoystickButton(Joystick, 5)
-      .whenPressed(new UpdateMotorMaxSpeed(-0.1f));
-
-    new JoystickButton(Joystick, 6)
-      .whenPressed(new UpdateMotorMaxSpeed(0.1f));
-
     new JoystickButton(Joystick, 3)
       .whenHeld(new MotorPowerUp(LoadingHandler, 1.05, 0.05f, false))
       .whenReleased(new MotorPowerDown(LoadingHandler, 0.92f, 0.01f));
@@ -80,6 +77,12 @@ public class RobotContainer
     new JoystickButton(Joystick, 4)
       .whenHeld(new MotorPowerUp(ShooterHandler, 1.05f, 0.05f, false))
       .whenReleased(new MotorPowerDown(ShooterHandler, 0.92f, 0.01f));
+
+    new JoystickButton(Joystick, 5)
+      .whenPressed(new UpdateMotorMaxSpeed(-0.1f));
+
+    new JoystickButton(Joystick, 6)
+      .whenPressed(new UpdateMotorMaxSpeed(0.1f));
 
     new JoystickButton(Joystick, 7)
       .whenHeld(new MotorPowerUp(IntakeLiftHandler, 1.05f, 0.05f, false))
@@ -102,7 +105,9 @@ public class RobotContainer
    */
   public Command getAutonomousCommand() 
   {
-    // An ExampleCommand will run in autonomous
-    return null;
+    return new SequentialCommandGroup(
+      new AutoDrive(Drivetrain), 
+      new AutoShoot(ShooterHandler, 1.05f, 0.05f),
+      new MotorPowerDown(ShooterHandler, 0.92f, 0.01f));
   }
 }
