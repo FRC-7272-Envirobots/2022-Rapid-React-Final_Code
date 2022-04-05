@@ -1,26 +1,28 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
-public class SimpleDrive extends CommandBase 
+public class TestEncoder extends CommandBase 
 {
   private final Drivetrain Drivetrain;
 
-  private final Joystick Joystick;
-
-  public SimpleDrive(Drivetrain drivetrain, Joystick joystick) 
+  public TestEncoder(Drivetrain drivetrain) 
   {
     Drivetrain = drivetrain;
-    Joystick = joystick;
     addRequirements(drivetrain);
+  }
+
+  @Override
+  public void initialize()
+  {
+    Drivetrain.ResetEncoders();
   }
 
   @Override
   public void execute() 
   {
-    Drivetrain.ArcadeDrive(Joystick.getRawAxis(0), -Joystick.getRawAxis(1));
+    Drivetrain.GetEncoderDrive().SmartDashboardLog("Drive Distances", false);
   }
 
   @Override

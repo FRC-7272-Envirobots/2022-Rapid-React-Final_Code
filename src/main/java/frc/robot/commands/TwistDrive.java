@@ -1,16 +1,17 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
-public class SimpleDrive extends CommandBase 
+public class TwistDrive extends CommandBase 
 {
   private final Drivetrain Drivetrain;
 
   private final Joystick Joystick;
 
-  public SimpleDrive(Drivetrain drivetrain, Joystick joystick) 
+  public TwistDrive(Drivetrain drivetrain, Joystick joystick) 
   {
     Drivetrain = drivetrain;
     Joystick = joystick;
@@ -20,7 +21,10 @@ public class SimpleDrive extends CommandBase
   @Override
   public void execute() 
   {
-    Drivetrain.ArcadeDrive(Joystick.getRawAxis(0), -Joystick.getRawAxis(1));
+    double rawThrottle = Joystick.getThrottle();
+    double throttle = Math.abs((rawThrottle - 1) / 2);
+    Drivetrain.ArcadeDrive(Joystick.getRawAxis(2) * throttle, -Joystick.getRawAxis(1) * throttle);
+    SmartDashboard.putString("Drive Speed", throttle + "%"); 
   }
 
   @Override

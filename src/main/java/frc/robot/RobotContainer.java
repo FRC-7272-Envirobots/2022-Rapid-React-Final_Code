@@ -9,14 +9,16 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.Joystick;
-import frc.robot.commands.ShooterPowerDown;
-import frc.robot.commands.ShooterPowerUp;
-import frc.robot.commands.SimpleDrive;
-import frc.robot.commands.TalonTest;
+import frc.robot.commands.TwistDrive;
+import frc.robot.commands.UpdateMotorMaxSpeed;
+import frc.robot.commands.MotorPowerDown;
+import frc.robot.commands.MotorPowerUp;
+import frc.robot.commands.TestEncoder;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.LoadingHandler;
+import frc.robot.subsystems.IntakeLiftHandler;
+import frc.robot.subsystems.ShooterHandler;
 import frc.robot.subsystems.LimeLight;
-import frc.robot.subsystems.Shooter;
-
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -33,7 +35,11 @@ public class RobotContainer
 
   public LimeLight LimeLight;
 
-  public Shooter Shooter;
+  public LoadingHandler LoadingHandler;
+
+  public IntakeLiftHandler IntakeLiftHandler;
+
+  public ShooterHandler ShooterHandler;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() 
@@ -48,7 +54,9 @@ public class RobotContainer
     Joystick = new Joystick(0);
     Drivetrain = new Drivetrain();
     LimeLight = new LimeLight();
-    Shooter = new Shooter(0.5f, 7);
+    LoadingHandler = new LoadingHandler(5, 9);
+    IntakeLiftHandler = new IntakeLiftHandler(8);
+    ShooterHandler = new ShooterHandler(6, 7);
   }
 
   /**
@@ -59,17 +67,32 @@ public class RobotContainer
    */
   private void ConfigureButtonBindings()
   {
+    new JoystickButton(Joystick, 5)
+      .whenPressed(new UpdateMotorMaxSpeed(-0.1f));
+
+    new JoystickButton(Joystick, 6)
+      .whenPressed(new UpdateMotorMaxSpeed(0.1f));
+
+    new JoystickButton(Joystick, 3)
+      .whenHeld(new MotorPowerUp(LoadingHandler, 1.05, 0.05f, false))
+      .whenReleased(new MotorPowerDown(LoadingHandler, 0.92f, 0.01f));
+
+    new JoystickButton(Joystick, 4)
+      .whenHeld(new MotorPowerUp(ShooterHandler, 1.05f, 0.05f, false))
+      .whenReleased(new MotorPowerDown(ShooterHandler, 0.92f, 0.01f));
+
     new JoystickButton(Joystick, 7)
-      .whenPressed(new ShooterPowerUp(Shooter, 1.05f, 0.05f, false))
-      .whenReleased(new ShooterPowerDown(Shooter, 0.92f, 0.01f));
+      .whenHeld(new MotorPowerUp(IntakeLiftHandler, 1.05f, 0.05f, false))
+      .whenReleased(new MotorPowerDown(IntakeLiftHandler, 0.92f, 0.01f));
 
     new JoystickButton(Joystick, 8)
-      .whenHeld(new TalonTest(Shooter));
+      .whenHeld(new TestEncoder(Drivetrain));
   }
 
   public void Finalise()
   {
-    Drivetrain.setDefaultCommand(new SimpleDrive(Drivetrain, Joystick));
+    Drivetrain.setDefaultCommand(new TwistDrive(Drivetrain, Joystick));
+    //Shooter.setDefaultCommand(new TriggerShooter(Shooter, Joystick, 1.05f, 1.05f, 0.92f, 0.01f));
   }
 
   /**

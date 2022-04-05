@@ -2,19 +2,16 @@ package frc.robot.data;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class Vector3 
+public class Vector2
 {
     public double X;
 
     public double Y;
 
-    public double Z;
-
-    public Vector3(double x, double y, double z)
+    public Vector2(double x, double y)
     {
         X = x;
         Y = y;
-        Z = z;
     }
 
     public void SmartDashboardLog(String identifier, Boolean multiple)
@@ -23,15 +20,14 @@ public class Vector3
         {
             SmartDashboard.putNumber(identifier + ".X", X);
             SmartDashboard.putNumber(identifier + ".Y", Y);
-            SmartDashboard.putNumber(identifier + ".Z", Z);
         }
         else
         {
-            SmartDashboard.putString(identifier, "{" + X + ", " + Y + ", " + Z + "}");
+            SmartDashboard.putString(identifier, "{" + X + ", " + Y + "}");
         }
     }
 
-    public static void SmartDashboardLog(Vector3 value, String identifier, Boolean multiple)
+    public static void SmartDashboardLog(Vector2 value, String identifier, Boolean multiple)
     {
         value.SmartDashboardLog(identifier, multiple);
     }

@@ -6,9 +6,11 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.data.Vector2;
 
 public class Drivetrain extends SubsystemBase 
 {
+  // Corresponding ID as assigned on PhoenixTuner is ID value here + 1
   public final WPI_VictorSPX[] Motors;
   public static final int LeftBack = 0;
   public static final int RightFront = 1;
@@ -16,12 +18,11 @@ public class Drivetrain extends SubsystemBase
   public static final int RightBack = 3;
 
   public final MotorControllerGroup[] MotorControllers;
+  public final DutyCycleEncoder[] Encoders;
   public static final int Left = 0;
   public static final int Right = 1;
 
   public final DifferentialDrive Drive;
-
-  public final DutyCycleEncoder Encoder;
 
   public Drivetrain() 
   {
@@ -36,7 +37,9 @@ public class Drivetrain extends SubsystemBase
     MotorControllers[Right] = new MotorControllerGroup(Motors[RightFront], Motors[RightBack]);
     Drive = new DifferentialDrive(MotorControllers[Left], MotorControllers[Right]);
 
-    Encoder = new DutyCycleEncoder(GetMotorIDFromArrayID(LeftFront));
+    Encoders = new DutyCycleEncoder[2];
+    Encoders[Left] = new DutyCycleEncoder(0);
+    Encoders[Right] = new DutyCycleEncoder(1);
   }
 
   @Override
@@ -58,5 +61,18 @@ public class Drivetrain extends SubsystemBase
   public void ArcadeDrive(double speed, double rotation)
   {
     Drive.arcadeDrive(speed, rotation);
+  }
+
+  public void ResetEncoders()
+  {
+    for (int i = 0; i < Encoders.length; i++)
+    {
+      Encoders[i].reset();
+    }
+  }
+
+  public Vector2 GetEncoderDrive()
+  {
+    return new Vector2(Encoders[Left].getDistance(), Encoders[Right].getDistance());
   }
 }

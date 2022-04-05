@@ -1,11 +1,11 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.MotorHandler;
 
-public class ShooterPowerUp extends CommandBase 
+public class MotorPowerUp extends CommandBase 
 {
-    public Shooter Shooter;
+    public MotorHandler MotorHandler;
 
     public double MinSpeed;
 
@@ -13,25 +13,25 @@ public class ShooterPowerUp extends CommandBase
 
     public boolean SafeEnd;
 
-    public ShooterPowerUp(Shooter shooter, double minSpeed, double accel, boolean safeEnd) 
+    public MotorPowerUp(MotorHandler motorHandler, double minSpeed, double accel, boolean safeEnd) 
     {
-        Shooter = shooter;
+        MotorHandler = motorHandler;
         MinSpeed = minSpeed;
         AccelRate = accel;
         SafeEnd = safeEnd;
-        addRequirements(Shooter);
+        addRequirements(MotorHandler);
     }
   
     @Override
     public void initialize()
     {
-        Shooter.CurrentSpeed = 0;
+        MotorHandler.CurrentSpeed = 0;
     }
 
     @Override
     public void execute()
     {
-        Shooter.Accel(MinSpeed, AccelRate);
+        MotorHandler.Accel(MinSpeed, AccelRate);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class ShooterPowerUp extends CommandBase
     {
         if (SafeEnd || interrupted)
         {
-            Shooter.Rotate(0);
+            MotorHandler.Rotate(0);
         }
     }
 
