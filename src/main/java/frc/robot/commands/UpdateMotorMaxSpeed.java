@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 
@@ -34,6 +35,7 @@ public class UpdateMotorMaxSpeed extends CommandBase
 
             case Shooter:
                 RobotContainer.ShooterHandler.UpdateMaxSpeed(SpeedChange);
+                SmartDashboard.putNumber("Shooter Test", RobotContainer.ShooterHandler.MaximumSpeed);
                 break;
         }
     }

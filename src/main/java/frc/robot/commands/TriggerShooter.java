@@ -21,7 +21,7 @@ public class TriggerShooter extends CommandBase
 
     public double MinSpeedContinualSpeed;
 
-    public TriggerShooter(RobotContainer container, Joystick joystick, double minSpeed, double accel, double decel, double minContinualSpeed) 
+    public TriggerShooter(MotorHandler throwaway, RobotContainer container, Joystick joystick, double minSpeed, double accel, double decel, double minContinualSpeed) 
     {
         switch (container.ActiveSystem)
         {
@@ -47,6 +47,7 @@ public class TriggerShooter extends CommandBase
         AccelRate = accel;
         DecelRate = decel;
         MinSpeedContinualSpeed = minContinualSpeed;
+        addRequirements(throwaway);
     }
 
     @Override
@@ -82,13 +83,13 @@ public class TriggerShooter extends CommandBase
         }
         else
         {
-            if (Motor.CurrentSpeed <= MinSpeedContinualSpeed)
+            if (MathUtils.Abs(Motor.CurrentSpeed) <= MinSpeedContinualSpeed)
             {
                 Motor.Rotate(0);
             }
             else
             {
-                Motor.Decel(DecelRate * MathUtils.Sign(Motor.MaximumSpeed));
+                Motor.Decel(DecelRate);
             }
         }
 

@@ -3,7 +3,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ShooterHandler;
 
-public class AutoShoot extends CommandBase 
+public class GhettoRevShooter extends CommandBase 
 {
     public ShooterHandler ShooterHandler;
 
@@ -13,7 +13,7 @@ public class AutoShoot extends CommandBase
 
     public int Timer;
 
-    public AutoShoot(ShooterHandler shooterHandler, double minSpeed, double accel) 
+    public GhettoRevShooter(ShooterHandler shooterHandler, double minSpeed, double accel) 
     {
         ShooterHandler = shooterHandler;
         MinSpeed = minSpeed;
@@ -46,6 +46,6 @@ public class AutoShoot extends CommandBase
     @Override
     public boolean isFinished() 
     {
-      return Timer > 200;
+      return Timer > 600;
     }
 }

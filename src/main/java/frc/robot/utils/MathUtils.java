@@ -21,4 +21,13 @@ public final class MathUtils
     {
         return value == 0 ? 0 : (value > 0 ? 1 : -1);
     }
+
+    public static double Abs(double value)
+    {
+        if (value < 0)
+        {
+            value *= -1f;
+        }
+        return value;
+    }
 }

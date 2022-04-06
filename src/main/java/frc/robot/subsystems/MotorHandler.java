@@ -21,6 +21,7 @@ public abstract class MotorHandler extends SubsystemBase
     {
         CurrentSpeed = MathUtils.Clamp(speed, 0, MaximumSpeed);
         InternalRotate(speed * MathUtils.Sign(MaximumSpeed));
+        SmartDashboard.putNumber("Current Motor Speed", speed * MathUtils.Sign(MaximumSpeed));
     }
 
     public void Accel(double minSpeed, double accel)

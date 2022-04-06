@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -16,13 +17,15 @@ import frc.robot.data.MotorSystems;
 import frc.robot.commands.AutoDrive;
 import frc.robot.commands.AutoShoot;
 import frc.robot.commands.CycleMotor;
+import frc.robot.commands.GhettoRevShooter;
 import frc.robot.commands.MotorPowerDown;
 import frc.robot.commands.TestEncoder;
-import frc.robot.commands.TriggerShooter;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.LoadingHandler;
+import frc.robot.subsystems.MotorHandler;
 import frc.robot.subsystems.IntakeLiftHandler;
 import frc.robot.subsystems.ShooterHandler;
+import frc.robot.utils.MathUtils;
 import frc.robot.subsystems.IndexHandler;
 import frc.robot.subsystems.LimeLight;
 /**
@@ -94,6 +97,9 @@ public class RobotContainer
 
     new JoystickButton(Joystick, 6)
       .whenPressed(new UpdateMotorMaxSpeed(this, 0.1f));
+      
+    new JoystickButton(Joystick, 7)
+      .whenPressed(new GhettoRevShooter(ShooterHandler, 1.05f, 0.05f));
 
     new JoystickButton(Joystick, 8)
       .whenHeld(new TestEncoder(Drivetrain));
@@ -102,7 +108,6 @@ public class RobotContainer
   public void Finalise()
   {
     Drivetrain.setDefaultCommand(new TwistDrive(Drivetrain, Joystick));
-    ShooterHandler.setDefaultCommand(new TriggerShooter(this, Joystick, 1.05f, 1.05f, 0.92f, 0.01f));
   }
 
   /**
@@ -116,5 +121,65 @@ public class RobotContainer
       new AutoDrive(Drivetrain), 
       new AutoShoot(ShooterHandler, 1.05f, 0.05f),
       new MotorPowerDown(ShooterHandler, 0.92f, 0.01f));
+  }
+
+  public void TeleopPeriodic()
+  {
+    if (Joystick.getTriggerPressed())
+    {
+      SmartDashboard.putString("TriggerState", "Pressed");
+    }
+    else if (Joystick.getTrigger())
+    {
+      SmartDashboard.putString("TriggerState", "Held");
+    }
+    else
+    {
+      SmartDashboard.putString("TriggerState", "Null");
+    }
+
+    MotorHandler Motor;
+    switch (ActiveSystem) 
+    {
+      case IntakeLift:
+        Motor = IntakeLiftHandler;
+        break;
+
+      case Loading:
+        Motor = LoadingHandler;
+        break;
+
+      case Index:
+        Motor = IndexHandler;
+        break;
+
+      default:
+      case Shooter:
+        Motor = ShooterHandler;
+        break;
+    }
+
+    if (Joystick.getTriggerPressed())
+    {
+      Motor.CurrentSpeed = 0;
+    }
+
+    if (Joystick.getTrigger())
+    {
+      Motor.Accel(1.05f, 1.05f * MathUtils.Sign(Motor.MaximumSpeed));
+    }
+    else
+    {
+      if (MathUtils.Abs(Motor.CurrentSpeed) <= 0.05f)
+      {
+        Motor.Rotate(0);
+      }
+      else
+      {
+        Motor.Decel(0.92f);
+      }
+    }
+
+    SmartDashboard.putString("Motor Speed", Motor.CurrentSpeed + "%");
   }
 }
