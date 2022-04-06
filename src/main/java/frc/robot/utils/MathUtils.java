@@ -16,4 +16,9 @@ public final class MathUtils
 
         return value;
     }
+
+    public static double Sign(double value)
+    {
+        return value == 0 ? 0 : (value > 0 ? 1 : -1);
+    }
 }

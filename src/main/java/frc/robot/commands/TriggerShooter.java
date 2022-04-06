@@ -1,15 +1,17 @@
-/*package frc.robot.commands;
+package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Shooter;
+import frc.robot.RobotContainer;
+import frc.robot.subsystems.MotorHandler;
+import frc.robot.utils.MathUtils;
 
 public class TriggerShooter extends CommandBase 
 {
     public Joystick Joystick;
 
-    public Shooter Shooter;
+    public MotorHandler Motor;
 
     public double MinSpeed;
 
@@ -19,21 +21,38 @@ public class TriggerShooter extends CommandBase
 
     public double MinSpeedContinualSpeed;
 
-    public TriggerShooter(Shooter shooter, Joystick joystick, double minSpeed, double accel, double decel, double minContinualSpeed) 
+    public TriggerShooter(RobotContainer container, Joystick joystick, double minSpeed, double accel, double decel, double minContinualSpeed) 
     {
-        Shooter = shooter;
+        switch (container.ActiveSystem)
+        {
+            case IntakeLift:
+                Motor = container.IntakeLiftHandler;
+                break;
+
+            case Loading:
+                Motor = container.LoadingHandler;
+                break;
+
+            case Index:
+                Motor = container.IndexHandler;
+                break;
+
+            case Shooter:
+                Motor = container.ShooterHandler;
+                break;
+        }
+
         Joystick = joystick;
         MinSpeed = minSpeed;
         AccelRate = accel;
         DecelRate = decel;
         MinSpeedContinualSpeed = minContinualSpeed;
-        addRequirements(Shooter);
     }
 
     @Override
     public void initialize()
     {
-        Shooter.CurrentSpeed = 0;
+        Motor.CurrentSpeed = 0;
     }
 
     @Override
@@ -54,26 +73,26 @@ public class TriggerShooter extends CommandBase
 
         if (Joystick.getTriggerPressed())
         {
-            Shooter.CurrentSpeed = 0;
+            Motor.CurrentSpeed = 0;
         }
 
         if (Joystick.getTrigger())
         {
-            Shooter.Accel(MinSpeed, AccelRate);
+            Motor.Accel(MinSpeed, AccelRate * MathUtils.Sign(Motor.MaximumSpeed));
         }
         else
         {
-            if (Shooter.CurrentSpeed <= MinSpeedContinualSpeed)
+            if (Motor.CurrentSpeed <= MinSpeedContinualSpeed)
             {
-                Shooter.Rotate(0);
+                Motor.Rotate(0);
             }
             else
             {
-                Shooter.Decel(DecelRate);
+                Motor.Decel(DecelRate * MathUtils.Sign(Motor.MaximumSpeed));
             }
         }
 
-        SmartDashboard.putString("Shooter Speed", Shooter.CurrentSpeed + "%");
+        SmartDashboard.putString("Motor Speed", Motor.CurrentSpeed + "%");
     }
 
     @Override
@@ -81,7 +100,7 @@ public class TriggerShooter extends CommandBase
     {
         if (interrupted)
         {
-            Shooter.Rotate(0);
+            Motor.Rotate(0);
         }
     }
 
@@ -90,4 +109,4 @@ public class TriggerShooter extends CommandBase
     {
       return false;
     }
-}*/
+}

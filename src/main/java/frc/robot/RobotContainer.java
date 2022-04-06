@@ -12,15 +12,18 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.commands.TwistDrive;
 import frc.robot.commands.UpdateMotorMaxSpeed;
+import frc.robot.data.MotorSystems;
 import frc.robot.commands.AutoDrive;
 import frc.robot.commands.AutoShoot;
+import frc.robot.commands.CycleMotor;
 import frc.robot.commands.MotorPowerDown;
-import frc.robot.commands.MotorPowerUp;
 import frc.robot.commands.TestEncoder;
+import frc.robot.commands.TriggerShooter;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.LoadingHandler;
 import frc.robot.subsystems.IntakeLiftHandler;
 import frc.robot.subsystems.ShooterHandler;
+import frc.robot.subsystems.IndexHandler;
 import frc.robot.subsystems.LimeLight;
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -42,7 +45,11 @@ public class RobotContainer
 
   public IntakeLiftHandler IntakeLiftHandler;
 
+  public IndexHandler IndexHandler;
+
   public ShooterHandler ShooterHandler;
+
+  public MotorSystems ActiveSystem;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() 
@@ -59,7 +66,9 @@ public class RobotContainer
     LimeLight = new LimeLight();
     LoadingHandler = new LoadingHandler(5, 9);
     IntakeLiftHandler = new IntakeLiftHandler(8);
-    ShooterHandler = new ShooterHandler(6, 7);
+    IndexHandler = new IndexHandler(6);
+    ShooterHandler = new ShooterHandler(7);
+    ActiveSystem = MotorSystems.Shooter;
   }
 
   /**
@@ -71,22 +80,20 @@ public class RobotContainer
   private void ConfigureButtonBindings()
   {
     new JoystickButton(Joystick, 3)
-      .whenHeld(new MotorPowerUp(LoadingHandler, 1.05, 0.05f, false))
-      .whenReleased(new MotorPowerDown(LoadingHandler, 0.92f, 0.01f));
+      .whenPressed(new CycleMotor(this, false));
 
     new JoystickButton(Joystick, 4)
+      .whenPressed(new CycleMotor(this, true));
+
+    /*new JoystickButton(Joystick, 4)
       .whenHeld(new MotorPowerUp(ShooterHandler, 1.05f, 0.05f, false))
-      .whenReleased(new MotorPowerDown(ShooterHandler, 0.92f, 0.01f));
+      .whenReleased(new MotorPowerDown(ShooterHandler, 0.92f, 0.01f));*/
 
     new JoystickButton(Joystick, 5)
-      .whenPressed(new UpdateMotorMaxSpeed(-0.1f));
+      .whenPressed(new UpdateMotorMaxSpeed(this, -0.1f));
 
     new JoystickButton(Joystick, 6)
-      .whenPressed(new UpdateMotorMaxSpeed(0.1f));
-
-    new JoystickButton(Joystick, 7)
-      .whenHeld(new MotorPowerUp(IntakeLiftHandler, 1.05f, 0.05f, false))
-      .whenReleased(new MotorPowerDown(IntakeLiftHandler, 0.92f, 0.01f));
+      .whenPressed(new UpdateMotorMaxSpeed(this, 0.1f));
 
     new JoystickButton(Joystick, 8)
       .whenHeld(new TestEncoder(Drivetrain));
@@ -95,7 +102,7 @@ public class RobotContainer
   public void Finalise()
   {
     Drivetrain.setDefaultCommand(new TwistDrive(Drivetrain, Joystick));
-    //Shooter.setDefaultCommand(new TriggerShooter(Shooter, Joystick, 1.05f, 1.05f, 0.92f, 0.01f));
+    ShooterHandler.setDefaultCommand(new TriggerShooter(this, Joystick, 1.05f, 1.05f, 0.92f, 0.01f));
   }
 
   /**

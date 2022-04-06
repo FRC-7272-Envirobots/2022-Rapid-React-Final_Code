@@ -8,7 +8,7 @@ public abstract class MotorHandler extends SubsystemBase
 {
     public double CurrentSpeed;
     
-    public static double MaximumSpeed;
+    public double MaximumSpeed;
 
     public MotorHandler()
     {
@@ -20,7 +20,7 @@ public abstract class MotorHandler extends SubsystemBase
     public void Rotate(double speed)
     {
         CurrentSpeed = MathUtils.Clamp(speed, 0, MaximumSpeed);
-        InternalRotate(speed);
+        InternalRotate(speed * MathUtils.Sign(MaximumSpeed));
     }
 
     public void Accel(double minSpeed, double accel)
@@ -47,9 +47,9 @@ public abstract class MotorHandler extends SubsystemBase
       Rotate(CurrentSpeed * decel);
     }
 
-    public static void UpdateMaxSpeed(double speedIncrement)
+    public void UpdateMaxSpeed(double speedIncrement)
     {
-        MaximumSpeed = MathUtils.Clamp(MaximumSpeed + speedIncrement, 0, 1);
-        SmartDashboard.putString("Max Shooter Speed", MaximumSpeed + "%");
+        MaximumSpeed = MathUtils.Clamp(MaximumSpeed + speedIncrement, -1, 1);
+        SmartDashboard.putString("Motor Speed", MaximumSpeed + "%");
     }
 }

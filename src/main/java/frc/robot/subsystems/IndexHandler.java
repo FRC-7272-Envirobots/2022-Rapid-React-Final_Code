@@ -3,19 +3,19 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
-public class ShooterHandler extends MotorHandler
+public class IndexHandler extends MotorHandler
 {
-    public TalonFX Shooter;
+    public TalonFX Index;
     
-    public ShooterHandler(int shooterID) 
+    public IndexHandler(int indexID) 
     {
         super();
-        Shooter = new TalonFX(shooterID);
+        Index = new TalonFX(indexID);
     }
 
     @Override
     protected void InternalRotate(double speed)
     {
-        Shooter.set(TalonFXControlMode.PercentOutput, CurrentSpeed);
+        Index.set(TalonFXControlMode.PercentOutput, CurrentSpeed);
     }
 }
