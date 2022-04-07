@@ -1,6 +1,6 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 
@@ -8,12 +8,12 @@ public class UpdateMotorMaxSpeed extends CommandBase
 {
     public RobotContainer RobotContainer;
 
-    public double SpeedChange;
+    public Joystick Joystick;
 
-    public UpdateMotorMaxSpeed(RobotContainer robotContainer, double speedChange) 
+    public UpdateMotorMaxSpeed(RobotContainer robotContainer, Joystick joystick) 
     {
         RobotContainer = robotContainer;
-        SpeedChange = speedChange;
+        Joystick = joystick;
     }
 
     @Override
@@ -22,20 +22,19 @@ public class UpdateMotorMaxSpeed extends CommandBase
         switch (RobotContainer.ActiveSystem)
         {
             case IntakeLift:
-                RobotContainer.IntakeLiftHandler.UpdateMaxSpeed(SpeedChange);
+                RobotContainer.IntakeLiftHandler.UpdateMaxSpeed(Joystick.getThrottle());
                 break;
 
             case Loading:
-                RobotContainer.LoadingHandler.UpdateMaxSpeed(SpeedChange);
+                RobotContainer.LoadingHandler.UpdateMaxSpeed(Joystick.getThrottle());
                 break;
 
             case Index:
-                RobotContainer.IndexHandler.UpdateMaxSpeed(SpeedChange);
+                RobotContainer.IndexHandler.UpdateMaxSpeed(Joystick.getThrottle());
                 break;
 
             case Shooter:
-                RobotContainer.ShooterHandler.UpdateMaxSpeed(SpeedChange);
-                SmartDashboard.putNumber("Shooter Test", RobotContainer.ShooterHandler.MaximumSpeed);
+                RobotContainer.ShooterHandler.UpdateMaxSpeed(Joystick.getThrottle());
                 break;
         }
     }

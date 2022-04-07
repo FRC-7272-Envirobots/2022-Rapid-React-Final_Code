@@ -21,10 +21,8 @@ public class TwistDrive extends CommandBase
   @Override
   public void execute() 
   {
-    double rawThrottle = Joystick.getThrottle();
-    double throttle = Math.abs((rawThrottle - 1) / 2);
-    Drivetrain.ArcadeDrive(Joystick.getRawAxis(2) * throttle, -Joystick.getRawAxis(1) * throttle);
-    SmartDashboard.putString("Drive Speed", throttle + "%"); 
+    Drivetrain.ArcadeDrive(Joystick.getRawAxis(2) * Drivetrain.DriveSpeed, -Joystick.getRawAxis(1) * Drivetrain.DriveSpeed);
+    SmartDashboard.putString("Drive Speed", Drivetrain.DriveSpeed + "%"); 
   }
 
   @Override

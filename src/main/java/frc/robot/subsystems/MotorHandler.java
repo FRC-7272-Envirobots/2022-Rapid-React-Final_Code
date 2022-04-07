@@ -48,9 +48,9 @@ public abstract class MotorHandler extends SubsystemBase
       Rotate(CurrentSpeed * decel);
     }
 
-    public void UpdateMaxSpeed(double speedIncrement)
+    public void UpdateMaxSpeed(double newMaxSpeed)
     {
-        MaximumSpeed = MathUtils.Clamp(MaximumSpeed + speedIncrement, -1, 1);
+        MaximumSpeed = MathUtils.Clamp(newMaxSpeed, -1, 1);
         SmartDashboard.putString("Motor Speed", MaximumSpeed + "%");
     }
 }

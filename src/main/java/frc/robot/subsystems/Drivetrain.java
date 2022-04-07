@@ -24,6 +24,8 @@ public class Drivetrain extends SubsystemBase
 
   public final DifferentialDrive Drive;
 
+  public double DriveSpeed;
+
   public Drivetrain() 
   {
     Motors = new WPI_VictorSPX[4];
@@ -40,6 +42,8 @@ public class Drivetrain extends SubsystemBase
     Encoders = new DutyCycleEncoder[2];
     Encoders[Left] = new DutyCycleEncoder(0);
     Encoders[Right] = new DutyCycleEncoder(1);
+
+    DriveSpeed = 0.5f;
   }
 
   @Override

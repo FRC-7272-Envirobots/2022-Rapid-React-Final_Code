@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.commands.TwistDrive;
+import frc.robot.commands.UpdateDrivetrainSpeed;
 import frc.robot.commands.UpdateMotorMaxSpeed;
 import frc.robot.data.MotorSystems;
 import frc.robot.commands.AutoDrive;
@@ -93,15 +94,18 @@ public class RobotContainer
       .whenReleased(new MotorPowerDown(ShooterHandler, 0.92f, 0.01f));*/
 
     new JoystickButton(Joystick, 5)
-      .whenPressed(new UpdateMotorMaxSpeed(this, -0.1f));
+      .whenPressed(new UpdateDrivetrainSpeed(Drivetrain, -0.1f));
 
     new JoystickButton(Joystick, 6)
-      .whenPressed(new UpdateMotorMaxSpeed(this, 0.1f));
+      .whenPressed(new UpdateDrivetrainSpeed(Drivetrain, 0.1f));
+
+    new JoystickButton(Joystick, 3)
+      .whenPressed(new UpdateMotorMaxSpeed(this, Joystick));
       
-    new JoystickButton(Joystick, 7)
+    new JoystickButton(Joystick, 4)
       .whenPressed(new GhettoRevShooter(ShooterHandler, 1.05f, 0.05f));
 
-    new JoystickButton(Joystick, 8)
+    new JoystickButton(Joystick, 9)
       .whenHeld(new TestEncoder(Drivetrain));
   }
 
@@ -166,7 +170,7 @@ public class RobotContainer
 
     if (Joystick.getTrigger())
     {
-      Motor.Accel(1.05f, 1.05f * MathUtils.Sign(Motor.MaximumSpeed));
+      Motor.Rotate(MathUtils.Lerp(Motor.CurrentSpeed, Motor.MaximumSpeed, 0.05f));
     }
     else
     {

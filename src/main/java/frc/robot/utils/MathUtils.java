@@ -30,4 +30,9 @@ public final class MathUtils
         }
         return value;
     }
+
+    public static double Lerp(double currentValue, double targetValue, double lerpValue)
+    {
+        return currentValue + (targetValue - currentValue) * lerpValue;
+    }
 }
