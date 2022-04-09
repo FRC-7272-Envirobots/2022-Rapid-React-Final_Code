@@ -16,6 +16,6 @@ public class IndexHandler extends MotorHandler
     @Override
     protected void InternalRotate(double speed)
     {
-        Index.set(TalonFXControlMode.PercentOutput, CurrentSpeed);
+        Index.set(TalonFXControlMode.PercentOutput, IsInversed ? -speed : speed);
     }
 }

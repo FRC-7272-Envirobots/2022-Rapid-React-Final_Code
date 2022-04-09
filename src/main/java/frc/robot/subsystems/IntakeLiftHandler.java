@@ -1,21 +1,24 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 public class IntakeLiftHandler extends MotorHandler
 {
-    public TalonFX IntakeArm;
+    public TalonSRX IntakeArm;
 
     public IntakeLiftHandler(int intakeArm) 
     {
         super();
-        IntakeArm = new TalonFX(intakeArm);
+        IntakeArm = new TalonSRX(intakeArm);
+        IntakeArm.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
     }
 
     @Override
     protected void InternalRotate(double speed)
     {
-        IntakeArm.set(TalonFXControlMode.PercentOutput, CurrentSpeed);
+        IntakeArm.setSensorPhase(IsInversed);
+        IntakeArm.set(TalonSRXControlMode.PercentOutput, IsInversed ? -speed * 0.75f : speed);
     }
 }

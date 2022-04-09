@@ -19,7 +19,7 @@ public class LoadingHandler extends MotorHandler
     @Override
     protected void InternalRotate(double speed)
     {
-        Column.set(TalonFXControlMode.PercentOutput, -CurrentSpeed);
-        Intake.set(TalonFXControlMode.PercentOutput, CurrentSpeed);
+        Column.set(TalonFXControlMode.PercentOutput, IsInversed ? speed : -speed);
+        Intake.set(TalonFXControlMode.PercentOutput, IsInversed ? -speed : speed);
     }
 }

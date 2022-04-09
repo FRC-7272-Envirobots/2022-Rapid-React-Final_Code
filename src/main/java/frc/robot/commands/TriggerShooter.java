@@ -1,15 +1,15 @@
-/*package frc.robot.commands;
+package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.ShooterHandler;
 
 public class TriggerShooter extends CommandBase 
 {
     public Joystick Joystick;
 
-    public Shooter Shooter;
+    public ShooterHandler Shooter;
 
     public double MinSpeed;
 
@@ -19,7 +19,7 @@ public class TriggerShooter extends CommandBase
 
     public double MinSpeedContinualSpeed;
 
-    public TriggerShooter(Shooter shooter, Joystick joystick, double minSpeed, double accel, double decel, double minContinualSpeed) 
+    public TriggerShooter(ShooterHandler shooter, Joystick joystick, double minSpeed, double accel, double decel, double minContinualSpeed) 
     {
         Shooter = shooter;
         Joystick = joystick;
@@ -39,19 +39,6 @@ public class TriggerShooter extends CommandBase
     @Override
     public void execute() 
     {
-        if (Joystick.getTriggerPressed())
-        {
-            SmartDashboard.putString("TriggerState", "Pressed");
-        }
-        else if (Joystick.getTrigger())
-        {
-            SmartDashboard.putString("TriggerState", "Held");
-        }
-        else
-        {
-            SmartDashboard.putString("TriggerState", "Null");
-        }
-
         if (Joystick.getTriggerPressed())
         {
             Shooter.CurrentSpeed = 0;
@@ -90,4 +77,4 @@ public class TriggerShooter extends CommandBase
     {
       return false;
     }
-}*/
+}

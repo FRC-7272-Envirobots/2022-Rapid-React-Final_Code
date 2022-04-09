@@ -33,8 +33,8 @@ public class Robot extends TimedRobot
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
     UsbCamera camera = CameraServer.startAutomaticCapture();
-    camera.setResolution(300, 300);
-    camera.setFPS(30);
+    camera.setResolution(180, 180);
+    camera.setFPS(20);
   }
 
   /**
@@ -93,7 +93,10 @@ public class Robot extends TimedRobot
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic()
+  {
+    m_robotContainer.TeleopPeriodic();
+  }
 
   @Override
   public void testInit() 

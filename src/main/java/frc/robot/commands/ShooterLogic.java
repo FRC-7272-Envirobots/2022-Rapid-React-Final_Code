@@ -1,9 +1,6 @@
 package frc.robot.commands;
 
-import java.time.Duration;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.MotorHandler;
 import frc.robot.subsystems.ShooterHandler;
 
 public class ShooterLogic extends CommandBase 
@@ -51,6 +48,6 @@ public class ShooterLogic extends CommandBase
     @Override
     public boolean isFinished() 
     {
-      return false;
+      return ActiveDuration > DurationCriteria && ShooterHandler.CurrentSpeed < 0.01f;
     }
 }

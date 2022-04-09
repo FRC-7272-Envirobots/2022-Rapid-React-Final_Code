@@ -16,6 +16,6 @@ public class ShooterHandler extends MotorHandler
     @Override
     protected void InternalRotate(double speed)
     {
-        Shooter.set(TalonFXControlMode.PercentOutput, CurrentSpeed);
+        Shooter.set(TalonFXControlMode.PercentOutput, IsInversed ? -speed : speed);
     }
 }

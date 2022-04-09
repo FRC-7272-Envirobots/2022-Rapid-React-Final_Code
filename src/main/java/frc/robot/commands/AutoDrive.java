@@ -22,7 +22,7 @@ public class AutoDrive extends CommandBase
   @Override
   public void execute() 
   {
-    Drivetrain.ArcadeDrive(-0.5f, 0);
+    Drivetrain.TankDrive(-0.5f, -0.5f);
   }
 
   @Override
@@ -34,6 +34,6 @@ public class AutoDrive extends CommandBase
   @Override
   public boolean isFinished() 
   {
-    return Drivetrain.Encoders[0].getDistance() < 3f;
+    return Drivetrain.Encoders[0].getDistance() > 10f;
   }
 }

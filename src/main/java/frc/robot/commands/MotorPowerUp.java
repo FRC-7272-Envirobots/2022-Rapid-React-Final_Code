@@ -13,18 +13,22 @@ public class MotorPowerUp extends CommandBase
 
     public boolean SafeEnd;
 
-    public MotorPowerUp(MotorHandler motorHandler, double minSpeed, double accel, boolean safeEnd) 
+    public boolean IsInversed;
+
+    public MotorPowerUp(MotorHandler motorHandler, double minSpeed, double accel, boolean safeEnd, boolean isInversed) 
     {
         MotorHandler = motorHandler;
         MinSpeed = minSpeed;
         AccelRate = accel;
         SafeEnd = safeEnd;
+        IsInversed = isInversed;
         addRequirements(MotorHandler);
     }
   
     @Override
     public void initialize()
     {
+        MotorHandler.IsInversed = IsInversed;
         MotorHandler.CurrentSpeed = 0;
     }
 
