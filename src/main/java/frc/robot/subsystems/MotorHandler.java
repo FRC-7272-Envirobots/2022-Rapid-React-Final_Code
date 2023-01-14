@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.MathUtils;
 
@@ -8,11 +7,14 @@ public abstract class MotorHandler extends SubsystemBase
 {
     public double CurrentSpeed;
     
-    public static double MaximumSpeed;
+    public double MaximumSpeed;
+
+    public boolean IsInversed;
 
     public MotorHandler()
     {
         MaximumSpeed = 0.5f;
+        IsInversed = false;
     }
 
     protected abstract void InternalRotate(double speed);
@@ -20,7 +22,7 @@ public abstract class MotorHandler extends SubsystemBase
     public void Rotate(double speed)
     {
         CurrentSpeed = MathUtils.Clamp(speed, 0, MaximumSpeed);
-        InternalRotate(speed);
+        InternalRotate(CurrentSpeed);
     }
 
     public void Accel(double minSpeed, double accel)
@@ -47,9 +49,13 @@ public abstract class MotorHandler extends SubsystemBase
       Rotate(CurrentSpeed * decel);
     }
 
-    public static void UpdateMaxSpeed(double speedIncrement)
+    public void UpdateMaxSpeed(double speedIncrement)
     {
         MaximumSpeed = MathUtils.Clamp(MaximumSpeed + speedIncrement, 0, 1);
-        SmartDashboard.putString("Max Shooter Speed", MaximumSpeed + "%");
+    }
+
+    public void InverseSpeed(boolean isInversed)
+    {
+        IsInversed = isInversed;
     }
 }
