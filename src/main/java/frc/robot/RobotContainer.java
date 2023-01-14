@@ -140,7 +140,7 @@ public class RobotContainer
     Commands.add(inverseIntakeLiftPowerUp);
     Commands.add(inverseIntakeLiftPowerDown);
 
-    GhettoAutoIntakeLift autoIntakeLift = new GhettoAutoIntakeLift(IntakeLiftHandler);
+    /*GhettoAutoIntakeLift autoIntakeLift = new GhettoAutoIntakeLift(IntakeLiftHandler);
     new JoystickButton(Joystick, 7)
       .whenPressed(autoIntakeLift);
     Commands.add(autoIntakeLift);
@@ -148,7 +148,7 @@ public class RobotContainer
     GhettoAutoIntakeDrop autoIntakeDrop = new GhettoAutoIntakeDrop(IntakeLiftHandler);
     new JoystickButton(Joystick, 8)
       .whenPressed(autoIntakeDrop);
-    Commands.add(autoIntakeDrop);
+    Commands.add(autoIntakeDrop);*/
 
     new JoystickButton(Joystick, 11)
       .whenPressed(new UpdateMotorMaxSpeed(ShooterHandler, 0.1f, "Shooter Speed"));
